@@ -30,6 +30,7 @@ function getGameConfig() {
     fps: {
       min: 30, // 最小帧率
       target: 60, // 目标帧率
+      limit: 1,
       max: 60, // 最大帧率
     },
   };
@@ -248,6 +249,16 @@ class MainScene extends Phaser.Scene {
         gameControls[controlId] = newValue;
       });
     });
+
+    this.fpsText = this.add.text(10, 50, "FPS: 0", {
+      fontSize: "16px",
+      fill: "#fff",
+      backgroundColor: "#000",
+    });
+    // 定时更新帧率
+    this.lastUpdateTime = 0;
+    this.frameCount = 0;
+
     const width = window.innerWidth;
     const height = window.innerHeight;
     const gap = 50 + this.BASE_RADIUS;
@@ -445,7 +456,17 @@ class MainScene extends Phaser.Scene {
     }
   }
 
-  update() {
+  update(time) {
+    // 每一帧增加计数
+    this.frameCount++;
+
+    // 每秒更新一次帧率
+    if (time - this.lastUpdateTime >= 1000) {
+      this.fpsText.setText(`FPS: ${this.frameCount}`);
+      this.frameCount = 0;
+      this.lastUpdateTime = time;
+    }
+
     this.soldiers.forEach((soldier) => {
       soldier.update(this.soldiers);
 
