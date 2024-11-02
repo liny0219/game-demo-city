@@ -39,7 +39,7 @@ function getGameConfig() {
 const gameControls = {
   jumpSpeed: 0.15,
   jumpHeight: 4,
-  moveSpeed: 1,
+  moveSpeed: 1.5,
   breathSpeed: 0.05,
   breathScale: 0.2,
   cohesionForce: 0.02,
@@ -218,7 +218,7 @@ class Soldier extends Phaser.GameObjects.Rectangle {
 class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "MainScene" });
-    this.ver = "v0.0.1";
+    this.ver = "v0.0.2";
     this.soldiers = [];
     this.selectionRect = null;
     this.startPoint = null;
@@ -479,29 +479,27 @@ class MainScene extends Phaser.Scene {
     this.soldiers.forEach((soldier) => {
       soldier.update(this.soldiers);
 
-      if (soldier.moving) {
-        const distanceToEnemy = Phaser.Math.Distance.Between(
-          soldier.x,
-          soldier.y,
-          this.enemyBase.x,
-          this.enemyBase.y
-        );
+      const distanceToEnemy = Phaser.Math.Distance.Between(
+        soldier.x,
+        soldier.y,
+        this.enemyBase.x,
+        this.enemyBase.y
+      );
 
-        if (distanceToEnemy <= this.BASE_RADIUS) {
-          const dx = soldier.targetX - soldier.x;
-          const dy = soldier.targetY - soldier.y;
-          const distanceToTarget = Math.sqrt(dx * dx + dy * dy);
+      if (distanceToEnemy <= this.BASE_RADIUS) {
+        const dx = soldier.targetX - soldier.x;
+        const dy = soldier.targetY - soldier.y;
+        const distanceToTarget = Math.sqrt(dx * dx + dy * dy);
 
-          if (distanceToTarget <= 2) {
-            this.enemyHP -= 1;
-            this.enemyHPText.setText(`HP: ${this.enemyHP}`);
+        if (distanceToTarget <= 2) {
+          this.enemyHP -= 1;
+          this.enemyHPText.setText(`HP: ${this.enemyHP}`);
 
-            const index = this.soldiers.indexOf(soldier);
-            if (index > -1) {
-              this.soldiers.splice(index, 1);
-              soldier.destroy();
-              this.updateSoldierCount();
-            }
+          const index = this.soldiers.indexOf(soldier);
+          if (index > -1) {
+            this.soldiers.splice(index, 1);
+            soldier.destroy();
+            this.updateSoldierCount();
           }
         }
       }
