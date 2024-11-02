@@ -252,11 +252,18 @@ class MainScene extends Phaser.Scene {
       });
     });
 
-    this.fpsText = this.add.text(10, 50, `${this.ver} FPS: 0`, {
+    this.add.text(10, 50, this.ver, {
       fontSize: "16px",
       fill: "#fff",
       backgroundColor: "#000",
     });
+
+    this.fpsText = this.add.text(10, 80, `FPS: 0`, {
+      fontSize: "16px",
+      fill: "#fff",
+      backgroundColor: "#000",
+    });
+
     // 定时更新帧率
     this.lastUpdateTime = 0;
     this.frameCount = 0;
@@ -464,7 +471,7 @@ class MainScene extends Phaser.Scene {
 
     // 每秒更新一次帧率
     if (time - this.lastUpdateTime >= 1000) {
-      this.fpsText.setText(`${this.ver} FPS: ${this.frameCount}`);
+      this.fpsText.setText(`FPS: ${this.frameCount}`);
       this.frameCount = 0;
       this.lastUpdateTime = time;
     }
