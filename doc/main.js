@@ -32,6 +32,7 @@ function getGameConfig() {
       target: 60, // 目标帧率
       limit: 1,
       max: 60, // 最大帧率
+      forceSetTimeOut: true,
     },
   };
 }
@@ -217,6 +218,7 @@ class Soldier extends Phaser.GameObjects.Rectangle {
 class MainScene extends Phaser.Scene {
   constructor() {
     super({ key: "MainScene" });
+    this.ver = "v0.0.1";
     this.soldiers = [];
     this.selectionRect = null;
     this.startPoint = null;
@@ -250,7 +252,7 @@ class MainScene extends Phaser.Scene {
       });
     });
 
-    this.fpsText = this.add.text(10, 50, "FPS: 0", {
+    this.fpsText = this.add.text(10, 50, `${this.ver} FPS: 0`, {
       fontSize: "16px",
       fill: "#fff",
       backgroundColor: "#000",
@@ -462,7 +464,7 @@ class MainScene extends Phaser.Scene {
 
     // 每秒更新一次帧率
     if (time - this.lastUpdateTime >= 1000) {
-      this.fpsText.setText(`FPS: ${this.frameCount}`);
+      this.fpsText.setText(`${this.ver} FPS: ${this.frameCount}`);
       this.frameCount = 0;
       this.lastUpdateTime = time;
     }
